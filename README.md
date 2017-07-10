@@ -1,2 +1,34 @@
 # SudokuSolver
-Solucionador de Sudokus de 9x9
+Solucionador de Sudokus.
+
+__*Proyecto en construcción. Cargada versión 0.1 - Aplicación en consola actualmente*__
+
+#### Explicación
+Programa que solventa sudokus introducidos por el usuario.
+En la versión actual, 0.1, se limita a leer una matriz de 9x9 de enteros como la siguiente:
+
+{ 8, 3, 2, 7, 0, 6, 0, 5, 4 }
+
+{ 0, 6, 5, 0, 3, 8, 7, 9, 2 }
+
+{ 7, 0, 4, 5, 2, 0, 0, 0, 0 }
+
+{ 0, 1, 8, 9, 7, 4, 3, 0, 5 }
+
+{ 9, 4, 0, 2, 8, 5, 6, 0, 0 }
+
+{ 5, 2, 7, 0, 1, 0, 0, 4, 8 }
+
+{ 0, 0, 0, 0, 4, 0, 5, 0, 0 }
+
+{ 0, 0, 0, 0, 0, 9, 0, 0, 3 }
+
+{ 3, 0, 6, 1, 5, 0, 4, 8, 9 }
+
+#### Funcionamiento
+Realiza la siguiente interpretación:
+- 0 = Casilla vacía. Es la que el programa buscará para rellenar su valor
+- De 1 a 9 = Valor fijo preestablecido por el usuario. La leerá para realizaz sus cálculos pero nunca modificará su valor.
+
+La lógica que sigue es la de la aplicación de fuerza bruta. Recorre las casillas editables y comprueba, de 1 a 9, que ese valor encaja con la fila, columan y sección correspondientes. En caso de encajar, avanza hacía la siguiente casilla.
+Si el número no puede estar en esa posición, incrementamos hasta el valor 9 y, en caso de que tampoco encaje, retrocedemos una casilla incrementando el valor de la miama en uno. Así hasta conseguir completar el sudoku o llegar a la casilla 00 de la matriz con un valor superior a 9, lo que signifca la irresolución del sudoku.
