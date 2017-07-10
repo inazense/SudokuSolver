@@ -19,7 +19,6 @@ public class Solucionador {
 		
 		GraficosConsola graficos = new GraficosConsola();
 		ArrayList<Casilla> editables = this.extraerCasillasEditables(tablero.getCasillas());
-		boolean control = true;
 		int i = 0;
 		
 		while (i < editables.size()) {
