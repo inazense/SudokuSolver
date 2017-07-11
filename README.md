@@ -25,6 +25,29 @@ En la versión actual, 0.1, se limita a leer una matriz de 9x9 de enteros como l
 
 { 3, 0, 6, 1, 5, 0, 4, 8, 9 }
 
+#### Cargar sudoku
+Si quieres cargar tu propio sudoku, tienes que generar un .csv con valores del 0 al 9 (0 casilla vacía), separado por comas y sin espacios, como se puede ver en el siguiente ejemplo:
+
+8,3,2,7,0,6,0,5,4
+
+0,6,5,0,3,8,7,9,2
+
+7,0,4,5,2,0,0,0,0
+
+0,1,8,9,7,4,3,0,5
+
+9,4,0,2,8,5,6,0,0
+
+5,2,7,0,1,0,0,4,8
+
+0,0,0,0,4,0,5,0,0
+
+0,0,0,0,0,9,0,0,3
+
+3,0,6,1,5,0,4,8,9
+
+Una vez hecho, carga el programa que te preguntará por la ruta del fichero (es indiferente si la escribes absoluta o relativa) y comenzará el proceso de resolución del sudoku. 
+
 #### Funcionamiento
 Realiza la siguiente interpretación:
 - 0 = Casilla vacía. Es la que el programa buscará para rellenar su valor

@@ -43,7 +43,7 @@ public class GraficosConsola {
 	/**
 	 * Imprime el título para la interfaz de consola
 	 */
-	private void imprimirTitulo() {
+	public void imprimirTitulo() {
 		
 		String texto = "";
 		texto += "******************************************\n";
