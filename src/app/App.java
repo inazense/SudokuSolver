@@ -32,6 +32,8 @@ public class App {
 		System.out.print("Escribe la ruta del CSV para cargar el fichero: ");
 		String ruta = scanner.nextLine();
 		
+		scanner.close();
+		
 		try {
 			matriz = lector.leerCSVSimple(ruta, lector.leerPropiedad("SEPARADOR_CSV"));
 		} 

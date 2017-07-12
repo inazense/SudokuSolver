@@ -16,5 +16,5 @@ public class Literales {
 	public static String INCOMPLETO = "SUDOKU NO RESUELTO";
 	
 	/// RUTAS
-	public static String RUTA_PROPERTIES = "config.properties";
+	public static String RUTA_PROPERTIES = "conf/config.properties";
 }
