@@ -99,12 +99,14 @@ public class Gui extends JFrame {
 		this.inicializarBotones();
 		this.inicializarLogo();
 		
+		setTitle(Literales.NOMBRE + " " + Literales.VERSION);
+		setIconImage(this.getLogo().getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(Literales.JFRAME_X, Literales.JFRAME_Y, Literales.JFRAME_ANCHO, Literales.JFRAME_LARGO);
 		setContentPane(contenedor);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setVisible(true);	
+		setVisible(true);
 	}
 	
 	/**
@@ -238,11 +240,21 @@ public class Gui extends JFrame {
 	 */
 	private void inicializarLogo() {
 		
-		ImageIcon imagen = new ImageIcon(Literales.RUTA_LOGO);
 		this.lblLogo = new JLabel();
 		this.lblLogo.setBounds(Literales.LOGO_X, Literales.LOGO_Y, Literales.LOGO_DIAMETRO, Literales.LOGO_DIAMETRO);
-		this.lblLogo.setIcon(imagen);
+		this.lblLogo.setIcon(this.getLogo());
 		this.contenedor.add(this.lblLogo);
+	}
+	
+	/**
+	 * Devuelve el logo de la aplicación
+	 * @return
+	 */
+	private ImageIcon getLogo() {
+		
+		ImageIcon imagen = new ImageIcon(Literales.RUTA_LOGO);
+		
+		return imagen;
 	}
 
 	/**

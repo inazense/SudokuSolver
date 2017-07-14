@@ -12,7 +12,7 @@ public class Literales {
 
 	/// TEXTOS
 	public static String NOMBRE 	= "Sudoku Solver";
-	public static String VERSION 	= "0.1";
+	public static String VERSION 	= "1.1";
 	public static String AUTOR 		= "Inazio";
 	public static String WEB 		= "programandoapasitos.com";
 	public static String COMPLETADO = "SUDOKU SOLUCIONADO";
