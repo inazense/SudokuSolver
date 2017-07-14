@@ -2,7 +2,6 @@ package utiles;
 
 import java.util.ArrayList;
 
-import gui.Gui;
 import participantes.Casilla;
 import participantes.Tablero;
 
