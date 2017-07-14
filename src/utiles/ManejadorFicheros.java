@@ -11,7 +11,7 @@ import java.util.Properties;
  * @author Inazio
  *
  */
-public class LectorFicheros {
+public class ManejadorFicheros {
 
 	/// PROPIEDADES
 	private BufferedReader buffer;
@@ -19,7 +19,7 @@ public class LectorFicheros {
 	private String rutaPropiedades;
 	
 	/// CONSTRUCTOR
-	public LectorFicheros() {
+	public ManejadorFicheros() {
 		this.buffer			 = null;
 		this.propiedades 	 = new Properties();
 		this.rutaPropiedades = Literales.RUTA_PROPERTIES;

@@ -25,7 +25,7 @@ import javax.swing.text.MaskFormatter;
 
 import participantes.Casilla;
 import participantes.Tablero;
-import utiles.LectorFicheros;
+import utiles.ManejadorFicheros;
 import utiles.Literales;
 import utiles.Solucionador;
 
@@ -49,6 +49,7 @@ public class Gui extends JFrame {
 	private JMenuItem mnItemNuevo;
 	private JMenuItem mnItemCargarCSV;
 	private JMenuItem mnItemCargarImagen;
+	private JMenuItem mnItemExportarCSV;
 	private JMenuItem mnItemFuncionamiento;
 	private JMenuItem mnItemInfo;
 	
@@ -61,11 +62,12 @@ public class Gui extends JFrame {
 	
 	private Tablero tablero;
 	private Solucionador solucionador;
-	private LectorFicheros lector;
+	private ManejadorFicheros lector;
 	
 	private ActionListener actionNuevo;
 	private ActionListener actionCargarCSV;
 	private ActionListener actionCargarImagen;
+	private ActionListener actionExportarCSV;
 	private ActionListener actionFuncionamiento;
 	private ActionListener actionInfo;
 	private ActionListener actionSolucionar;
@@ -83,7 +85,7 @@ public class Gui extends JFrame {
 		this.selectorDeFichero.setFileFilter(this.filtroExtension);
 		
 		this.solucionador = new Solucionador();
-		this.lector = new LectorFicheros();
+		this.lector = new ManejadorFicheros();
 		
 		this.inicializarActionListeners();
 		this.cargarConfiguracionBasica();
@@ -147,6 +149,8 @@ public class Gui extends JFrame {
 		this.mnItemNuevo.addActionListener(this.actionNuevo);
 		this.mnArchivo.add(this.mnItemNuevo);
 		
+		this.mnArchivo.addSeparator();
+		
 		this.mnItemCargarCSV = new JMenuItem(Literales.MENU_ITEM_CARGAR_CSV);
 		this.mnItemCargarCSV.addActionListener(this.actionCargarCSV);
 		this.mnArchivo.add(this.mnItemCargarCSV);
@@ -154,6 +158,12 @@ public class Gui extends JFrame {
 		this.mnItemCargarImagen = new JMenuItem(Literales.MENU_ITEM_CARGAR_IMAGEN);
 		this.mnItemCargarImagen.addActionListener(this.actionCargarImagen);
 		this.mnArchivo.add(this.mnItemCargarImagen);
+		
+		this.mnArchivo.addSeparator();
+		
+		this.mnItemExportarCSV = new JMenuItem(Literales.MENU_ITEM_EXPORTAR_CSV);
+		this.mnItemCargarImagen.addActionListener(this.actionExportarCSV);
+		this.mnArchivo.add(this.mnItemExportarCSV);
 	}
 	
 	/**
@@ -412,6 +422,14 @@ public class Gui extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				
+				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
+			}
+		};
+		
+		// ACTION EXPORTAR CSV
+		this.actionExportarCSV = new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
 				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
 			}
 		};

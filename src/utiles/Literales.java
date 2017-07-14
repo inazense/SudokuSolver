@@ -23,6 +23,7 @@ public class Literales {
 	public static String MENU_ITEM_NUEVO 			= "Nuevo";
 	public static String MENU_ITEM_CARGAR_CSV 		= "Cargar desde CSV";
 	public static String MENU_ITEM_CARGAR_IMAGEN 	= "Cargar desde imagen";
+	public static String MENU_ITEM_EXPORTAR_CSV 	= "Exportar a CSV";
 	public static String MENU_ITEM_FUNCIONAMIENTO 	= "¿Cómo funciona?";
 	public static String MENU_ITEM_INFO 			= "Información";
 	
@@ -36,7 +37,7 @@ public class Literales {
 	public static String INFORMACION 			= "Información";
 	public static String CANCEL_JOPTIONCHOOSED 	= "CANCEL";
 	
-	public static String EN_CONSTRUCCION = "En construcción. \nEn breves estará disponible está funcionalidad";
+	public static String EN_CONSTRUCCION = "En construcción. \nEn breves estará disponible esta funcionalidad";
 	
 	/// RUTAS
 	public static String RUTA_PROPERTIES 	= "conf/config.properties";
