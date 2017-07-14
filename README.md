@@ -1,7 +1,7 @@
 # SudokuSolver
 Solucionador de Sudokus.
 
-__*Proyecto en construcción. Cargada versión 0.1 - Aplicación en consola actualmente*__
+__*Proyecto en construcción. Cargada versión 1.1
 
 <p align="center">
   <img src="/resources/img/logo.png">
