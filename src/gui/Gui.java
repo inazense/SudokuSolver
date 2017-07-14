@@ -162,7 +162,7 @@ public class Gui extends JFrame {
 		this.mnArchivo.addSeparator();
 		
 		this.mnItemExportarCSV = new JMenuItem(Literales.MENU_ITEM_EXPORTAR_CSV);
-		this.mnItemCargarImagen.addActionListener(this.actionExportarCSV);
+		this.mnItemExportarCSV.addActionListener(this.actionExportarCSV);
 		this.mnArchivo.add(this.mnItemExportarCSV);
 	}
 	
@@ -426,13 +426,16 @@ public class Gui extends JFrame {
 			}
 		};
 		
-		// ACTION EXPORTAR CSV
 		this.actionExportarCSV = new ActionListener() {
 			
+			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
+				
 			}
 		};
+		
 		
 		// ACTION FUNCIONAMIENTO
 		this.actionFuncionamiento = new ActionListener() {
