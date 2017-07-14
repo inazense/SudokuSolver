@@ -4,9 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -51,6 +53,8 @@ public class Gui extends JFrame {
 	
 	private JFileChooser selectorDeFichero;
 	
+	private JLabel lblLogo;
+	
 	private Tablero tablero;
 	private Solucionador solucionador;
 	private LectorFicheros lector;
@@ -61,7 +65,6 @@ public class Gui extends JFrame {
 	private ActionListener actionFuncionamiento;
 	private ActionListener actionInfo;
 	private ActionListener actionSolucionar;
-	private ActionListener actionLimpiar;
 	
 	private FileNameExtensionFilter filtroExtension;
 	
@@ -94,6 +97,7 @@ public class Gui extends JFrame {
 		this.inicializarTextFields();
 		this.inicializarSeparadores();
 		this.inicializarBotones();
+		this.inicializarLogo();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(Literales.JFRAME_X, Literales.JFRAME_Y, Literales.JFRAME_ANCHO, Literales.JFRAME_LARGO);
@@ -225,8 +229,20 @@ public class Gui extends JFrame {
 		this.btnLimpiar = new JButton(Literales.BTN_LIMPIAR);
 		this.setFont(Literales.BOTON_FUENTE);
 		this.btnLimpiar.setBounds(340, 331, Literales.BOTON_ANCHO, Literales.BOTON_LARGO);
-		this.btnLimpiar.addActionListener(this.actionLimpiar);
+		this.btnLimpiar.addActionListener(this.actionNuevo);
 		this.contenedor.add(this.btnLimpiar);
+	}
+	
+	/**
+	 * Inicializa el logo
+	 */
+	private void inicializarLogo() {
+		
+		ImageIcon imagen = new ImageIcon(Literales.RUTA_LOGO);
+		this.lblLogo = new JLabel();
+		this.lblLogo.setBounds(Literales.LOGO_X, Literales.LOGO_Y, Literales.LOGO_DIAMETRO, Literales.LOGO_DIAMETRO);
+		this.lblLogo.setIcon(imagen);
+		this.contenedor.add(this.lblLogo);
 	}
 
 	/**
@@ -412,18 +428,6 @@ public class Gui extends JFrame {
 				}
 			}
 		};
-		
-		// BOTON LIMPIAR
-		this.actionLimpiar = new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
-				
-			}
-		};
-		
-
 	}
 	
 	/**
@@ -462,38 +466,4 @@ public class Gui extends JFrame {
 		
 		JOptionPane.showMessageDialog(this.contenedor, mensaje, Literales.INFORMACION, JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

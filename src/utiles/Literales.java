@@ -29,17 +29,18 @@ public class Literales {
 	public static String BTN_SOLUCIONAR = "Solucionar Sudoku";
 	public static String BTN_LIMPIAR 	= "Limpiar tablero";
 	
-	public static String CSV_EXTENSION_TEXTO = "Archivos CSV";
-	public static String CSV_EXTENSION = "csv";
+	public static String CSV_EXTENSION_TEXTO 	= "Archivos CSV";
+	public static String CSV_EXTENSION 			= "csv";
 	
-	public static String ERROR = "Ocurrió un error";
-	public static String INFORMACION = "Información";
-	public static String CANCEL_JOPTIONCHOOSED = "CANCEL";
+	public static String ERROR 					= "Ocurrió un error";
+	public static String INFORMACION 			= "Información";
+	public static String CANCEL_JOPTIONCHOOSED 	= "CANCEL";
 	
 	public static String EN_CONSTRUCCION = "En construcción. \nEn breves estará disponible está funcionalidad";
 	
 	/// RUTAS
-	public static String RUTA_PROPERTIES = "conf/config.properties";
+	public static String RUTA_PROPERTIES 	= "conf/config.properties";
+	public static String RUTA_LOGO 			= "resources/img/logo.png";
 	
 	/// CONFIGURACION GUI
 	public static int JFRAME_ANCHO 	= 528;
@@ -70,5 +71,9 @@ public class Literales {
 	public static int BOTON_ANCHO 	= 162;
 	public static int BOTON_LARGO 	= 23;
 	public static Font BOTON_FUENTE = new Font("Tahoma", Font.BOLD, 14);
+	
+	public static int LOGO_X 		= 350;
+	public static int LOGO_Y 		= 30;
+	public static int LOGO_DIAMETRO = 150;
 	
 }
