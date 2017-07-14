@@ -3,9 +3,13 @@ Solucionador de Sudokus.
 
 __*Proyecto en construcción. Cargada versión 0.1 - Aplicación en consola actualmente*__
 
+<p align="center">
+  <img src="/resources/img/logo.png">
+</p>
+
 #### Explicación
 Programa que solventa sudokus introducidos por el usuario.
-En la versión actual, 0.1, se limita a leer una matriz de 9x9 de enteros como la siguiente:
+En la versión actual lee una matriz de 9x9 de enteros como la siguiente:
 
 { 8, 3, 2, 7, 0, 6, 0, 5, 4 }
 
@@ -24,6 +28,12 @@ En la versión actual, 0.1, se limita a leer una matriz de 9x9 de enteros como l
 { 0, 0, 0, 0, 0, 9, 0, 0, 3 }
 
 { 3, 0, 6, 1, 5, 0, 4, 8, 9 }
+
+y trata de resolverla, para posteriormente imprimir el resultado por pantalla o mostrar una advertencia en caso de que no haya podido soluciar el Sudoku.
+
+<p align="center">
+  <img src="/resources/img/ejemplo1.png">
+</p>
 
 #### Cargar sudoku
 Si quieres cargar tu propio sudoku, tienes que generar un .csv con valores del 0 al 9 (0 casilla vacía), separado por comas y sin espacios, como se puede ver en el siguiente ejemplo:
