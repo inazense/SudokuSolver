@@ -3,10 +3,12 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -19,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.MaskFormatter;
 
 import participantes.Casilla;
 import participantes.Tablero;
@@ -32,7 +35,8 @@ public class Gui extends JFrame {
 	private JPanel contenedor;
 	private static final long serialVersionUID = 1L;
 	
-	private JTextField[][] casillas = new JTextField[9][9];
+	private JFormattedTextField[][] casillas = new JFormattedTextField[9][9];
+	private MaskFormatter mascara;
 	
 	private JSeparator separadorHorizontal1;
 	private JSeparator separadorHorizontal2;
@@ -172,9 +176,16 @@ public class Gui extends JFrame {
 	 * Inicializa los JTextField
 	 */
 	private void inicializarTextFields() {
+		
+		try {
+			this.mascara = new MaskFormatter("#");
+		} catch (ParseException e) {
+			this.mostrarMensajeDeError(e.getMessage());
+		}
+		
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				this.casillas[i][j] = new JTextField();
+				this.casillas[i][j] = new JFormattedTextField(this.mascara);
 				this.casillas[i][j].setColumns(Literales.TEXTFIELD_COLUMNAS);
 				this.casillas[i][j].setBounds(this.calcularPosicionHorizontal(j), this.calcularPosicionVertical(i), Literales.TEXTFIELD_DIAMETRO, Literales.TEXTFIELD_DIAMETRO);
 				this.casillas[i][j].setFont(Literales.TEXTFIELD_FUENTE);
@@ -429,7 +440,7 @@ public class Gui extends JFrame {
 		this.actionSolucionar = new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				
+				actualizarCamposTablero();
 				Tablero nuevoTablero = solucionador.solucionarSudoku(tablero);
 				if (nuevoTablero == null) {
 					mostrarMensajeDeError(Literales.INCOMPLETO);
@@ -477,5 +488,32 @@ public class Gui extends JFrame {
 	private void mostrarMensajeDeInformacion(String mensaje) {
 		
 		JOptionPane.showMessageDialog(this.contenedor, mensaje, Literales.INFORMACION, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	/**
+	 * Actualiza los campos del tablero lógico con los insertados y / o modificados por el usuario
+	 * en la interfaz gráfica.
+	 */
+	private void actualizarCamposTablero() {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				String valor = this.casillas[i][j].getText();
+				int valorReal;
+				if (valor.equals("") || valor.equals(" ")) {
+					valorReal = 0;
+				}
+				else {
+					valorReal = Integer.parseInt(valor);
+				}
+				
+				this.tablero.getCasillas()[i][j].setValor(valorReal);
+				if (this.tablero.getCasillas()[i][j].getValor() == 0) {
+					this.tablero.getCasillas()[i][j].setEditable(true);
+				}
+				else {
+					this.tablero.getCasillas()[i][j].setEditable(false);
+				}
+			}
+		}
 	}
 }
