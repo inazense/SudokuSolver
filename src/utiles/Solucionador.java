@@ -2,7 +2,7 @@ package utiles;
 
 import java.util.ArrayList;
 
-import gui.GraficosConsola;
+import gui.Gui;
 import participantes.Casilla;
 import participantes.Tablero;
 
@@ -15,15 +15,12 @@ public class Solucionador {
 	 * @param tablero Tablero que contiene las casillas del sudoku
 	 * @return boolean. True = Sudoku solucionado. False = Sudoku sin solucionar
 	 */
-	public boolean solucionarSudoku(Tablero tablero) {
+	public Tablero solucionarSudoku(Tablero tablero) {
 		
-		GraficosConsola graficos = new GraficosConsola();
 		ArrayList<Casilla> editables = this.extraerCasillasEditables(tablero.getCasillas());
 		int i = 0;
 		
 		while (i < editables.size()) {
-			
-			graficos.imprimirTablero(tablero);
 			
 			// Control de salida. Si el primer resultado es igual a 0 y su valor superior al máximo permitido por el sudoku, 
 			// error al solucionar el sudoku
@@ -33,7 +30,7 @@ public class Solucionador {
 				i--;
 				
 				if (i < 0) {
-					return false;
+					return null;
 				}
 				else {
 					actual = editables.get(i);
@@ -55,7 +52,6 @@ public class Solucionador {
 				}
 				else
 				{
-					System.out.println(i + ": MAL");
 					actual.setValor(actual.getValor() + 1);
 					if (actual.getValor() > 9) {
 						tablero.reestablecerCasillaPorPosicion(actual.getPosX(), actual.getPosY());
@@ -66,7 +62,7 @@ public class Solucionador {
 							tablero.editarCasilla(actual);
 						}
 						else {
-							return false;
+							return null;
 						}
 					}
 				}
@@ -74,7 +70,7 @@ public class Solucionador {
 			
 		}
 		
-		return true;
+		return tablero;
 	}
 	
 	/**
