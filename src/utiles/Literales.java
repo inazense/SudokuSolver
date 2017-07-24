@@ -39,6 +39,9 @@ public class Literales {
 	
 	public static String EN_CONSTRUCCION = "En construcción. \nEn breves estará disponible esta funcionalidad";
 	
+	public static String GUARDADO_CSV_OK 	= "CSV generado correctamente";
+	public static String GUARDADO_CSV_FAIL 	= "Error al generar el CSV";
+	
 	/// RUTAS
 	public static String RUTA_PROPERTIES 	= "conf/config.properties";
 	public static String RUTA_LOGO 			= "resources/img/logo.png";

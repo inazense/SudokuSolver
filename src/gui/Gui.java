@@ -48,7 +48,6 @@ public class Gui extends JFrame {
 	private JMenu mnAyuda;
 	private JMenuItem mnItemNuevo;
 	private JMenuItem mnItemCargarCSV;
-	private JMenuItem mnItemCargarImagen;
 	private JMenuItem mnItemExportarCSV;
 	private JMenuItem mnItemFuncionamiento;
 	private JMenuItem mnItemInfo;
@@ -62,11 +61,10 @@ public class Gui extends JFrame {
 	
 	private Tablero tablero;
 	private Solucionador solucionador;
-	private ManejadorFicheros lector;
+	private ManejadorFicheros manejadorDeFicheros;
 	
 	private ActionListener actionNuevo;
 	private ActionListener actionCargarCSV;
-	private ActionListener actionCargarImagen;
 	private ActionListener actionExportarCSV;
 	private ActionListener actionFuncionamiento;
 	private ActionListener actionInfo;
@@ -85,7 +83,7 @@ public class Gui extends JFrame {
 		this.selectorDeFichero.setFileFilter(this.filtroExtension);
 		
 		this.solucionador = new Solucionador();
-		this.lector = new ManejadorFicheros();
+		this.manejadorDeFicheros = new ManejadorFicheros();
 		
 		this.inicializarActionListeners();
 		this.cargarConfiguracionBasica();
@@ -154,12 +152,6 @@ public class Gui extends JFrame {
 		this.mnItemCargarCSV = new JMenuItem(Literales.MENU_ITEM_CARGAR_CSV);
 		this.mnItemCargarCSV.addActionListener(this.actionCargarCSV);
 		this.mnArchivo.add(this.mnItemCargarCSV);
-		
-		this.mnItemCargarImagen = new JMenuItem(Literales.MENU_ITEM_CARGAR_IMAGEN);
-		this.mnItemCargarImagen.addActionListener(this.actionCargarImagen);
-		this.mnArchivo.add(this.mnItemCargarImagen);
-		
-		this.mnArchivo.addSeparator();
 		
 		this.mnItemExportarCSV = new JMenuItem(Literales.MENU_ITEM_EXPORTAR_CSV);
 		this.mnItemExportarCSV.addActionListener(this.actionExportarCSV);
@@ -405,7 +397,7 @@ public class Gui extends JFrame {
 				if (!ruta.equals(Literales.CANCEL_JOPTIONCHOOSED)) {
 					try {
 						
-						int[][] matriz = lector.leerCSVSimple(ruta, lector.leerPropiedad("SEPARADOR_CSV"));
+						int[][] matriz = manejadorDeFicheros.leerCSVSimple(ruta, manejadorDeFicheros.leerPropiedad("SEPARADOR_CSV"));
 						tablero.inicializarTablero();
 						tablero.insertarValores(matriz);
 						pintarTablero(tablero.getCasillas());
@@ -417,22 +409,15 @@ public class Gui extends JFrame {
 			}
 		};
 		
-		// ACTION CARGAR IMAGEN
-		this.actionCargarImagen = new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
-			}
-		};
-		
+		// ACTION EXPORTARCSV
 		this.actionExportarCSV = new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
-				
+				//mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
+				String ruta 				= elegirRutaGuardadoFicheroCSV();
+				manejadorDeFicheros.guardarCSV(ruta, leerContenidoDelTablero());
 			}
 		};
 		
@@ -494,6 +479,24 @@ public class Gui extends JFrame {
 	}
 	
 	/**
+	 * Abre una ventana de diálogo para elegir donde guardar el nuevo fichero CSV
+	 * @return String con la ruta del fichero
+	 */
+	private String elegirRutaGuardadoFicheroCSV() {
+		
+		String ruta = "";
+		int seleccion = this.selectorDeFichero.showSaveDialog(this.contenedor);
+		if (seleccion == JFileChooser.APPROVE_OPTION) {
+			ruta = this.selectorDeFichero.getSelectedFile().getAbsolutePath();
+		}
+		else {
+			ruta = Literales.CANCEL_JOPTIONCHOOSED;
+		}
+		
+		return ruta;
+	}
+	
+	/**
 	 * Muestra un mensaje de error con interfaz gráfica
 	 * @param mensaje
 	 */
@@ -536,5 +539,21 @@ public class Gui extends JFrame {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Lee el contenido del tablero y devuelve los valores de las casillas en una matriz de enteros
+	 * @return Matriz de enteros
+	 */
+	private int[][] leerContenidoDelTablero() {
+		int[][] matriz = new int[9][9];
+		
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9 ; j++) {
+				matriz[i][j] = this.tablero.getCasillas()[i][j].getValor();
+			}
+		}
+		
+		return matriz;
 	}
 }
