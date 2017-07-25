@@ -260,6 +260,97 @@ public class Gui extends JFrame {
 	}
 	
 	/**
+	 * Inicializa los action listener que se lanzan pulsando botones
+	 */
+	private void inicializarActionListeners() {
+		
+		// BOTON NUEVO
+		this.actionNuevo = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tablero.inicializarTablero();
+				pintarTablero(tablero.getCasillas());
+			}
+		};
+		
+		// BOTON CARGAR CSV
+		this.actionCargarCSV = new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				String ruta = elegirFicheroConVentana();
+				
+				// Si el usuario no pulsa cancelar
+				if (!ruta.equals(Literales.CANCEL_JOPTIONCHOOSED)) {
+					try {
+						
+						int[][] matriz = manejadorDeFicheros.leerCSVSimple(ruta, manejadorDeFicheros.leerPropiedad("SEPARADOR_CSV"));
+						tablero.inicializarTablero();
+						tablero.insertarValores(matriz);
+						pintarTablero(tablero.getCasillas());
+					} catch (NumberFormatException | IOException ex) {
+						mostrarMensajeDeError(ex.getMessage());
+					}
+				}
+				
+			}
+		};
+		
+		// ACTION EXPORTAR CSV
+		this.actionExportarCSV = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String ruta 				= elegirRutaGuardadoFicheroCSV();
+				if (!ruta.equals(Literales.CANCEL_JOPTIONCHOOSED)) {
+					if (!ruta.endsWith(".csv")) {
+						ruta += ".csv";
+					}
+					manejadorDeFicheros.guardarCSV(ruta, leerContenidoDelTablero());
+				}
+				
+			}
+		};
+		
+		
+		// ACTION FUNCIONAMIENTO
+		this.actionFuncionamiento = new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				mostrarDialogo(2);
+				
+			}
+		};
+		
+		// ACTION INFO
+		this.actionInfo = new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				mostrarDialogo(1);
+				
+			}
+		};
+		
+		// BOTON SOLUCIONAR
+		this.actionSolucionar = new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				actualizarCamposTablero();
+				Tablero nuevoTablero = solucionador.solucionarSudoku(tablero);
+				if (nuevoTablero == null) {
+					mostrarMensajeDeError(Literales.INCOMPLETO);
+				}
+				else {
+					tablero = nuevoTablero;
+					pintarTablero(tablero.getCasillas());
+				}
+			}
+		};
+	}
+	
+	/**
 	 * Devuelve el logo de la aplicación
 	 * @return
 	 */
@@ -269,7 +360,159 @@ public class Gui extends JFrame {
 		
 		return imagen;
 	}
+	
+	/**
+	 * Muestra un mensaje de error con interfaz gráfica
+	 * @param mensaje
+	 */
+	private void mostrarMensajeDeError(String mensaje) {
+		
+		JOptionPane.showMessageDialog(this.contenedor, mensaje, Literales.ERROR, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Muestra un diálogo que carga la información sobre el programa
+	 */
+	private void mostrarDialogo(int modo) {
+		
+		String texto = "";
+		String titulo = " | " + Literales.NOMBRE + " " + Literales.VERSION;
+		
+		// Información
+		if (modo == 1) {
+			titulo = "Introduccion" + titulo;
+			texto = "<html>Bienvenido a " + Literales.NOMBRE + ". Está aplicación está pensada para el estudio de Java y la resolución de Sudukus <br><br>"
+					+ "Autor: " + Literales.AUTOR + " | " + Literales.WEB + "<br>"
+					+ "GitHub: " + Literales.URL_GITHUB 
+					+ "</html>"; 
+		}
+		
+		// Funcionamiento
+		if (modo == 2) {
+			titulo = "¿Cómo funciona?" + titulo;
+			texto = "<html>Tienes dos formas de cargar Sudokus:<br>"
+					+ "- Manualmente. Escribiendo el sudoku base en la interfaz gráfica<br>"
+					+ "- Archivo -> Cargar desde CSV. El contenido del CSV deberá tener la siguiente estructura:<br><br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;8,0,0,0,0,0,0,0,0<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,0,3,6,0,0,0,0,0<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,7,0,0,9,0,2,0,0<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,5,0,0,0,7,0,0,0<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,0,0,0,4,5,7,0,0<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,0,0,1,0,0,0,3,0<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,0,1,0,0,0,0,6,8<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,0,8,5,0,0,0,1,0<br>"
+					+ "&ensp;&ensp;&ensp;&ensp;&ensp;0,9,0,0,0,0,4,0,0<br>"
+					+ "<br>"
+					+ "Es decir, el 0 representará los espacios vacíos del Sudoku y del 1 al 9 los otros valores.<br><br>"
+					+ "Una vez introducido, pulsaremos en Solucionar Sudoku.<br>"
+					+ "Y posteriormente podremos exportar el resultado a CSV (Archivo -> Exportar a CSV) o limpiar el tablero"
+					+ "</html>"; 
+		}
+		
+		MiDialogo dialogoInfo = new MiDialogo(texto, titulo);
+		dialogoInfo.setVisible(true);
+	}
 
+	
+	public void pintarTablero(Casilla[][] matriz) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				String texto = "";
+				if (matriz[i][j].getValor() != 0) {
+					texto = String.valueOf(matriz[i][j].getValor());
+				}
+				this.casillas[i][j].setText(texto);
+				
+				if (matriz[i][j].isEditable()) {
+					this.casillas[i][j].setForeground(Literales.TEXTFIELD_COLOR_VARIABLE);
+				}
+				else {
+					this.casillas[i][j].setForeground(Literales.TEXTFIELD_COLOR_FIJO);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Lee el contenido del tablero y devuelve los valores de las casillas en una matriz de enteros
+	 * @return Matriz de enteros
+	 */
+	private int[][] leerContenidoDelTablero() {
+		int[][] matriz = new int[9][9];
+		
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9 ; j++) {
+				matriz[i][j] = this.tablero.getCasillas()[i][j].getValor();
+			}
+		}
+		
+		return matriz;
+	}
+	
+	/**
+	 * Actualiza los campos del tablero lógico con los insertados y / o modificados por el usuario
+	 * en la interfaz gráfica.
+	 */
+	private void actualizarCamposTablero() {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				String valor = this.casillas[i][j].getText();
+				int valorReal;
+				if (valor.equals("") || valor.equals(" ")) {
+					valorReal = 0;
+				}
+				else {
+					valorReal = Integer.parseInt(valor);
+				}
+				
+				this.tablero.getCasillas()[i][j].setValor(valorReal);
+				if (this.tablero.getCasillas()[i][j].getValor() == 0) {
+					this.tablero.getCasillas()[i][j].setEditable(true);
+				}
+				else {
+					this.tablero.getCasillas()[i][j].setEditable(false);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Abre una ventana de diálogo para elegir un fichero CSV
+	 * @return String con la ruta del fichero
+	 */
+	private String elegirFicheroConVentana() {
+		
+		String ruta = "";
+		int seleccion = this.selectorDeFichero.showOpenDialog(this.contenedor);
+		 
+		 if (seleccion == JFileChooser.APPROVE_OPTION) {
+			 ruta = this.selectorDeFichero.getSelectedFile().getAbsolutePath();
+		 }
+		 else {
+			 ruta = Literales.CANCEL_JOPTIONCHOOSED;
+		 }
+		 
+		 return ruta;
+	}
+	
+	/**
+	 * Abre una ventana de diálogo para elegir donde guardar el nuevo fichero CSV
+	 * @return String con la ruta del fichero
+	 */
+	private String elegirRutaGuardadoFicheroCSV() {
+		
+		String ruta = "";
+		int seleccion = this.selectorDeFichero.showSaveDialog(this.contenedor);
+		if (seleccion == JFileChooser.APPROVE_OPTION) {
+			ruta = this.selectorDeFichero.getSelectedFile().getAbsolutePath();
+		}
+		else {
+			ruta = Literales.CANCEL_JOPTIONCHOOSED;
+		}
+		
+		return ruta;
+	}
+	
 	/**
 	 * Calcula la posición horizontal de la casilla
 	 * @param x Casilla horizontal
@@ -354,206 +597,4 @@ public class Gui extends JFrame {
 		return resultado;
 	}
 	
-	public void pintarTablero(Casilla[][] matriz) {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				String texto = "";
-				if (matriz[i][j].getValor() != 0) {
-					texto = String.valueOf(matriz[i][j].getValor());
-				}
-				this.casillas[i][j].setText(texto);
-				
-				if (matriz[i][j].isEditable()) {
-					this.casillas[i][j].setForeground(Literales.TEXTFIELD_COLOR_VARIABLE);
-				}
-				else {
-					this.casillas[i][j].setForeground(Literales.TEXTFIELD_COLOR_FIJO);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Inicializa los action listener que se lanzan pulsando botones
-	 */
-	private void inicializarActionListeners() {
-		
-		// BOTON NUEVO
-		this.actionNuevo = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tablero.inicializarTablero();
-				pintarTablero(tablero.getCasillas());
-			}
-		};
-		
-		// BOTON CARGAR CSV
-		this.actionCargarCSV = new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				String ruta = elegirFicheroConVentana();
-				
-				// Si el usuario no pulsa cancelar
-				if (!ruta.equals(Literales.CANCEL_JOPTIONCHOOSED)) {
-					try {
-						
-						int[][] matriz = manejadorDeFicheros.leerCSVSimple(ruta, manejadorDeFicheros.leerPropiedad("SEPARADOR_CSV"));
-						tablero.inicializarTablero();
-						tablero.insertarValores(matriz);
-						pintarTablero(tablero.getCasillas());
-					} catch (NumberFormatException | IOException ex) {
-						mostrarMensajeDeError(ex.getMessage());
-					}
-				}
-				
-			}
-		};
-		
-		// ACTION EXPORTARCSV
-		this.actionExportarCSV = new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				//mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
-				String ruta 				= elegirRutaGuardadoFicheroCSV();
-				manejadorDeFicheros.guardarCSV(ruta, leerContenidoDelTablero());
-			}
-		};
-		
-		
-		// ACTION FUNCIONAMIENTO
-		this.actionFuncionamiento = new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
-				
-			}
-		};
-		
-		// ACTION INFO
-		this.actionInfo = new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				mostrarMensajeDeInformacion(Literales.EN_CONSTRUCCION);
-				
-			}
-		};
-		
-		// BOTON SOLUCIONAR
-		this.actionSolucionar = new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				actualizarCamposTablero();
-				Tablero nuevoTablero = solucionador.solucionarSudoku(tablero);
-				if (nuevoTablero == null) {
-					mostrarMensajeDeError(Literales.INCOMPLETO);
-				}
-				else {
-					tablero = nuevoTablero;
-					pintarTablero(tablero.getCasillas());
-				}
-			}
-		};
-	}
-	
-	/**
-	 * Abre una ventana de diálogo para elegir un fichero CSV
-	 * @return String con la ruta del fichero
-	 */
-	private String elegirFicheroConVentana() {
-		
-		String ruta = "";
-		int seleccion = this.selectorDeFichero.showOpenDialog(this.contenedor);
-		 
-		 if (seleccion == JFileChooser.APPROVE_OPTION) {
-			 ruta = this.selectorDeFichero.getSelectedFile().getAbsolutePath();
-		 }
-		 else {
-			 ruta = Literales.CANCEL_JOPTIONCHOOSED;
-		 }
-		 
-		 return ruta;
-	}
-	
-	/**
-	 * Abre una ventana de diálogo para elegir donde guardar el nuevo fichero CSV
-	 * @return String con la ruta del fichero
-	 */
-	private String elegirRutaGuardadoFicheroCSV() {
-		
-		String ruta = "";
-		int seleccion = this.selectorDeFichero.showSaveDialog(this.contenedor);
-		if (seleccion == JFileChooser.APPROVE_OPTION) {
-			ruta = this.selectorDeFichero.getSelectedFile().getAbsolutePath();
-		}
-		else {
-			ruta = Literales.CANCEL_JOPTIONCHOOSED;
-		}
-		
-		return ruta;
-	}
-	
-	/**
-	 * Muestra un mensaje de error con interfaz gráfica
-	 * @param mensaje
-	 */
-	private void mostrarMensajeDeError(String mensaje) {
-		
-		JOptionPane.showMessageDialog(this.contenedor, mensaje, Literales.ERROR, JOptionPane.ERROR_MESSAGE);
-	}
-	
-	/**
-	 * Muestra un mensaje de información con interfaz gráfica
-	 * @param mensaje
-	 */
-	private void mostrarMensajeDeInformacion(String mensaje) {
-		
-		JOptionPane.showMessageDialog(this.contenedor, mensaje, Literales.INFORMACION, JOptionPane.INFORMATION_MESSAGE);
-	}
-	
-	/**
-	 * Actualiza los campos del tablero lógico con los insertados y / o modificados por el usuario
-	 * en la interfaz gráfica.
-	 */
-	private void actualizarCamposTablero() {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				String valor = this.casillas[i][j].getText();
-				int valorReal;
-				if (valor.equals("") || valor.equals(" ")) {
-					valorReal = 0;
-				}
-				else {
-					valorReal = Integer.parseInt(valor);
-				}
-				
-				this.tablero.getCasillas()[i][j].setValor(valorReal);
-				if (this.tablero.getCasillas()[i][j].getValor() == 0) {
-					this.tablero.getCasillas()[i][j].setEditable(true);
-				}
-				else {
-					this.tablero.getCasillas()[i][j].setEditable(false);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Lee el contenido del tablero y devuelve los valores de las casillas en una matriz de enteros
-	 * @return Matriz de enteros
-	 */
-	private int[][] leerContenidoDelTablero() {
-		int[][] matriz = new int[9][9];
-		
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9 ; j++) {
-				matriz[i][j] = this.tablero.getCasillas()[i][j].getValor();
-			}
-		}
-		
-		return matriz;
-	}
 }
