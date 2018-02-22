@@ -64,4 +64,4 @@ Realiza la siguiente interpretación:
 - De 1 a 9 = Valor fijo preestablecido por el usuario. La leerá para realizaz sus cálculos pero nunca modificará su valor.
 
 La lógica que sigue es la de la aplicación de fuerza bruta. Recorre las casillas editables y comprueba, de 1 a 9, que ese valor encaja con la fila, columan y sección correspondientes. En caso de encajar, avanza hacía la siguiente casilla.
-Si el número no puede estar en esa posición, incrementamos hasta el valor 9 y, en caso de que tampoco encaje, retrocedemos una casilla incrementando el valor de la miama en uno. Así hasta conseguir completar el sudoku o llegar a la casilla 00 de la matriz con un valor superior a 9, lo que signifca la irresolución del sudoku.
+Si el número no puede estar en esa posición, incrementamos hasta el valor 9 y, en caso de que tampoco encaje, retrocedemos una casilla incrementando el valor de la misma en uno. Así hasta conseguir completar el sudoku o llegar a la casilla [0,0] de la matriz con un valor superior a 9, lo que signifca la irresolución del sudoku.
